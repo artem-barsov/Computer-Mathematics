@@ -1,5 +1,6 @@
 from polynomial_algos import *
 from matrix_algos import *
+import system_algos
 
 def task1():
     a = read_polynom()
@@ -25,12 +26,14 @@ def task3():
 
 def task4():
     a = read_matrix()
+    print('Полином:', matrix2polynomstr(a))
     print('Точка (x0,y0): ', end='')
     x, y = map(float, input().strip().split(' '))
     print('Ответ:', '%g'%f_x_y(a, x, y))
 
 def task5():
     a = read_matrix()
+    print('Полином:', matrix2polynomstr(a))
     print('Матрица производной по x:')
     da_dx = dmatrix_dx(a)
     print_matrix(da_dx)
@@ -40,10 +43,20 @@ def task5():
     print_matrix(da_dy)
     print('Производная по y:', matrix2polynomstr(da_dy))
 
+def task6():
+    print('Действительная ', end='')
+    real = read_matrix()
+    print('Полином:', matrix2polynomstr(a))
+    print('Мнимая ', end='')
+    imag = read_matrix()
+    print('Полином:', matrix2polynomstr(a))
+    print('Ответ:', system_algos.newton(real, imag))
+
 print('1. Найти производную полинома')
 print('2. Методом хорд найти наибольший из корней уравнения')
 print('3. Методом Ньютона найти наибольший из корней уравнения')
 print('4. Найти значение полинома от двух переменных в точке по схеме Горнера')
 print('5. Найти частные производные полинома от двух переменных')
+print('6. Найти комплексный корень уравнения методом Ньютона для систем уравнений с двумя неизвестными')
 print('Пункт: ', end='')
-[task1, task2, task3, task4, task5][int(input())-1]()
+[task1, task2, task3, task4, task5, task6][int(input())-1]()
