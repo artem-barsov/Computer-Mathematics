@@ -70,6 +70,9 @@ def root_bounds(a):
 
 def sign(x): return (x > 0) - (x < 0)
 
+def d_dx(a):
+    return [ai*(len(a)-i-1) for (i, ai) in enumerate(a[:-1])]
+
 def dichotomy(a, l, r, e = 0.001):
     if sign(f(a, l)) == sign(f(a, r)):
         return None
@@ -118,6 +121,3 @@ def find_roots(a, method = dichotomy, step = 0.3):
         if x is not None: ret.append(x)
         l += step
     return sorted(set(ret))
-
-def d_dx(a):
-    return [ai*(len(a)-i-1) for (i, ai) in enumerate(a[:-1])]
