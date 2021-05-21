@@ -25,6 +25,7 @@ def task3():
         print('Невозможно найти корни методом Ньютона')
 
 def task4():
+    print('Матрица коэффициентов:')
     a = read_matrix()
     print('Полином:', matrix2polynomstr(a))
     print('Точка (x0,y0): ', end='')
@@ -32,6 +33,7 @@ def task4():
     print('Ответ:', '%g'%f_x_y(a, x, y))
 
 def task5():
+    print('Матрица коэффициентов:')
     a = read_matrix()
     print('Полином:', matrix2polynomstr(a))
     print('Матрица производной по x:')
@@ -44,10 +46,10 @@ def task5():
     print('Производная по y:', matrix2polynomstr(da_dy))
 
 def task6():
-    print('Действительная ', end='')
+    print('Действительная матрица коэффициентов:')
     real = read_matrix()
     print('Полином:', matrix2polynomstr(a))
-    print('Мнимая ', end='')
+    print('Мнимая матрица коэффициентов:')
     imag = read_matrix()
     print('Полином:', matrix2polynomstr(a))
     print('Ответ:', system_algos.newton(real, imag))
