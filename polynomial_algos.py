@@ -10,6 +10,8 @@ def f_x_y(a, x, y):
     return f(map(lambda a: f(a, x), a), y)
 
 def polynom2str(a, x = 'x'):
+    def get_super(s):
+        return s.translate(s.maketrans('0123456789', '⁰¹²³⁴⁵⁶⁷⁸⁹'))
     s = ''
     for i in range(len(a)):
         if a[i] == 0: continue
@@ -23,7 +25,7 @@ def polynom2str(a, x = 'x'):
         if deg > 0:
             s += x
             if deg != 1:
-                s += '^' + str(deg)
+                s += get_super(str(deg))
             s += ' '
     return s
 

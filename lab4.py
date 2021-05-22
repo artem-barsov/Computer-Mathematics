@@ -1,6 +1,5 @@
 from polynomial_algos import *
 from matrix_algos import *
-import system_algos
 
 def task1():
     print('Первая матрица:')
