@@ -1,4 +1,5 @@
 from polynomial_algos import d_dx, f_x_y
+from math import log10
 
 def read_matrix():
     a = []
@@ -8,6 +9,8 @@ def read_matrix():
     return a
 
 def matrix2polynomstr(a, x = 'x', y = 'y'):
+    def get_super(s):
+        return s.translate(s.maketrans('0123456789', '⁰¹²³⁴⁵⁶⁷⁸⁹'))
     s = ''
     first = True
     for i in range(len(a)):
@@ -24,7 +27,7 @@ def matrix2polynomstr(a, x = 'x', y = 'y'):
             if degX > 0:
                 s += x
                 if degX != 1:
-                    s += '^' + str(degX)
+                    s += get_super(str(degX))
                 if degY == 0:
                     s += ' '
             if degY > 0:
@@ -125,11 +128,41 @@ def det(a):
         i0, j0 = idx
         if i0 != k:
             a[k], a[i0] = a[i0], a[k]
+            ret = -ret
         if j0 != k:
             for ai in a:
                 ai[k], ai[j0] = ai[j0], ai[k]
+            ret = -ret
         for i in range(k+1, len(a)):
             for j in range(k+1, len(a[0])):
                 a[i][j] -= a[i][k]*a[k][j]/a[k][k]
         ret *= a[k][k]
     return ret
+
+def track(a):
+    return sum([a[i][i] for i in range(len(a))])
+
+def char_polyn_LeVerrier(a):
+    ak = a
+    s = [track(a)]
+    for _ in range(len(a)-1):
+        ak = mat_mul(ak,a)
+        s.append(track(ak))
+    p = []
+    for i in range(len(a)):
+        p.append(-(s[i] + sum([p[j]*s[i-j-1] for j in range(i)])) / (i+1))
+    return [1] + p
+
+def eigenvalue(a, e = 0.001):
+    y = [[1] for _ in range(len(a))]
+    ak = a
+    yk_prev = y
+    eigenval_prev = 0
+    eigenval = e
+    while abs(eigenval - eigenval_prev) >= e:
+        eigenval_prev = eigenval
+        yk = mat_mul(ak, y)
+        eigenval = sum([yk[i][0]/yk_prev[i][0] for i in range(len(a))]) / len(a)
+        yk_prev = yk
+        ak = mat_mul(ak, a)
+    return round(eigenval, int(log10(1/e)))
