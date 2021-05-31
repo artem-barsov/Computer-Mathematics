@@ -39,7 +39,7 @@ def read_polynom():
 
 def quotient(a, t):
     ret = [a[0]]
-    for ai in a[1:]:
+    for ai in a[1:-1]:
         ret.append(ai + ret[-1]*t)
     return ret
 

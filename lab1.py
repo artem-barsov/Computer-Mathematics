@@ -10,7 +10,7 @@ def task2():
     a = read_polynom()
     print('Число а:', end=' ')
     t = float(input())
-    print('Частное:', polynom2str(quotient(a, t)[:-1]))
+    print('Частное:', polynom2str(quotient(a, t)))
 
 def task3():
     a = read_polynom()
