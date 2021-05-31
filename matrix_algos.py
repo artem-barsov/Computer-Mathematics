@@ -1,5 +1,5 @@
-from polynomial_algos import d_dx, f_x_y
-from math import log10
+from polynomial_algos import d_dx, f_x_y, quotient
+from math import log10, sqrt
 
 def read_matrix():
     a = []
@@ -153,7 +153,11 @@ def char_polyn_LeVerrier(a):
         p.append(-(s[i] + sum([p[j]*s[i-j-1] for j in range(i)])) / (i+1))
     return [1] + p
 
-def eigenvalue(a, e = 0.001):
+def normalized_v(v):
+    norm = sqrt(sum([x**2 for x in v]))
+    return [vx/norm for vx in v]
+
+def eigenval8vec(a, e = 0.001):
     y = [[1] for _ in range(len(a))]
     ak = a
     yk_prev = y
@@ -165,4 +169,16 @@ def eigenvalue(a, e = 0.001):
         eigenval = sum([yk[i][0]/yk_prev[i][0] for i in range(len(a))]) / len(a)
         yk_prev = yk
         ak = mat_mul(ak, a)
-    return round(eigenval, int(log10(1/e)))
+    eigenvec = list(zip(normalized_v(list(*zip(*yk)))))
+    return round(eigenval, int(log10(1/e))), eigenvec
+
+def rest_eigenvalues3x3(m, max_eigenval, e = 0.001):
+    a,b,c = quotient(char_polyn_LeVerrier(m), max_eigenval)
+    D = b**2 - 4*a*c
+    if D == 0:
+        return round(-b/(2*a), int(log10(1/e)))
+    if D > 0:
+        return round((-b + sqrt(D))/(2*a), int(log10(1/e))), round((-b - sqrt(D))/(2*a), int(log10(1/e)))
+    if D < 0:
+        return (round(-b/(2*a), int(log10(1/e))), round(sqrt(-D)/(2*a)), int(log10(1/e))), \
+        (round(-b/(2*a), int(log10(1/e))), round(-sqrt(-D)/(2*a), int(log10(1/e))))
