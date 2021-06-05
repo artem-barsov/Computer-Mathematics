@@ -11,7 +11,7 @@ def task2():
     roots = find_roots(a, chord, 1)
     if roots:
         print('Корни:', ', '.join(map(lambda x: '%g'%x, roots)))
-        print('Наибольший корень:', '%g'%max(roots))
+        print('Наибольший корень: %g' % max(roots))
     else:
         print('Невозможно найти корни методом хорд')
 
@@ -20,7 +20,7 @@ def task3():
     roots = find_roots(a, newton, 0.5)
     if roots:
         print('Корни:', ', '.join(map(lambda x: '%g'%x, roots)))
-        print('Наибольший корень:', '%g'%max(roots))
+        print('Наибольший корень: %g' % max(roots))
     else:
         print('Невозможно найти корни методом Ньютона')
 
@@ -30,7 +30,7 @@ def task4():
     print('Полином:', matrix2polynomstr(a))
     print('Точка (x0,y0): ', end='')
     x, y = map(float, input().strip().split(' '))
-    print('Ответ:', '%g'%f_x_y(a, x, y))
+    print('Ответ: %g' % f_x_y(a, x, y))
 
 def task5():
     print('Матрица коэффициентов:')

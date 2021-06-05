@@ -23,7 +23,7 @@ def task3():
     print('Матрица:')
     a = read_matrix()
     try:
-        print('Определитель матрицы =', '%g'%round(det(a), 3))
+        print('Определитель матрицы = %g' % round(det(a), 3))
     except Exception as e:
         print(e)
 

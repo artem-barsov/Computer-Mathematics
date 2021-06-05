@@ -21,8 +21,8 @@ def task3():
 def task4():
     a = read_polynom()
     lower_bound, upper_bound = root_bounds(a)
-    print('Нижняя граница корней:', '%g'%lower_bound)
-    print('Верхняя граница корней:', '%g'%upper_bound)
+    print('Нижняя граница корней: %g' % lower_bound)
+    print('Верхняя граница корней: %g' % upper_bound)
 
 def task5():
     a = read_polynom()
