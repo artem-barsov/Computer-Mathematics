@@ -52,8 +52,9 @@ def changed_vars(a, t):
     return ret[::-1]
 
 def div_polys(a, b):
-    a = [ai/b[0] for ai in a]
-    b = [-bi/b[0] for bi in b[1:]]
+    b0 = b[0]
+    a = [ai/b0 for ai in a]
+    b = [-bi/b0 for bi in b[1:]]
     ret = [0 for _ in range(len(b))]
     for i in range(len(a)):
         ret.append(
@@ -61,7 +62,13 @@ def div_polys(a, b):
                 for j in range( len(b)-1,
                     -1+(i-len(a)+len(b))*(i>=len(a)-len(b)+1),
                     -1)]))
-    return ret[len(b):-len(b)], ret[-len(b):]
+    quot, rem = ret[len(b):-len(b)], ret[-len(b):]
+    while quot[0] == 0 and len(quot) > 1:
+        quot.pop(0)
+    while rem[0] == 0 and len(rem) > 1:
+        rem.pop(0)
+    for i in range(len(rem)): rem[i] *= b0
+    return quot, rem
 
 def Lagrange_upper(a):
     if a[0]<0: a = [-ai for ai in a]
@@ -79,9 +86,9 @@ def Newton_upper(a, step = 1):
         while f(dk_dx, c) < 0: c += step
     return c
 
-def root_bounds(a):
+def root_bounds(a, method = Lagrange_upper):
     def find_upper(a, step = 1):
-        upp = ceil(Lagrange_upper(a))
+        upp = method(a)
         while all([x>=0 for x in quotient(a, upp-step)]):
             upp -= step
         return upp
@@ -158,3 +165,23 @@ def ring_bounds(a):
     while a[-i] == 0: i += 1
     r = 1 / (1 + B / abs(a[-i]))
     return r, R
+
+def cnt_real_roots(a, l = -1e9, r = 1e9):
+    Sturm = [a, d_dx(a)]
+    while len(Sturm[-1]) > 1:
+        rem = div_polys(Sturm[-2], Sturm[-1])[1]
+        Sturm.append([-remi for remi in rem])
+    def N(a, t):
+        c, i = 0, 0
+        prev_sPt = sign(f(a[i], t))
+        while prev_sPt == 0:
+            i += 1
+            prev_sPt = sign(f(a[i], t))
+        for i in range(i+1, len(a)):
+            sPt = sign(f(a[i], t))
+            if sPt == 0: continue
+            if prev_sPt != sPt:
+                c += 1
+                prev_sPt = sPt
+        return c
+    return N(Sturm, l) - N(Sturm, r)
