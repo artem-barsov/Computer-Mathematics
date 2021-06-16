@@ -9,24 +9,36 @@ def f(a, t):
 def f_x_y(a, x, y):
     return f(map(lambda a: f(a, x), a), y)
 
-def polynom2str(a, x = 'x'):
-    def get_super(s):
+def get_script(s, script='sup'):
+    if script == 'sup':
         return s.translate(s.maketrans('0123456789', '⁰¹²³⁴⁵⁶⁷⁸⁹'))
+    if script == 'sub':
+        return s.translate(s.maketrans('0123456789', '₀₁₂₃₄₅₆₇₈₉'))
+    return s
+
+def polynom2str(a, x = 'x', script='sup'):
     s = ''
-    for i in range(len(a)):
+    frm = 0
+    while a[frm]==0: frm += 1
+    first_done = False
+    for i in range(frm, len(a)):
         if a[i] == 0: continue
         deg = len(a) - i - 1
-        if i != 0:
+        if first_done:
             s += ('+ ' if a[i] > 0 else '- ')
         elif a[i] < 0:
             s += '-'
+        first_done = True
         if abs(a[i]) != 1 or deg == 0:
             s += '%g'%abs(a[i])
-        if deg > 0:
-            s += x
-            if deg != 1:
-                s += get_super(str(deg))
-            s += ' '
+        if script == 'sup':
+            if deg > 0:
+                s += x
+                if deg != 1:
+                    s += get_script(str(deg), script)
+                s += ' '
+        else:
+            s += x + get_script(str(i+1), script) + ' '
     return s if s!='' else '0'
 
 def read_polynom():
