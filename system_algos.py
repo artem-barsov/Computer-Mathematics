@@ -74,14 +74,11 @@ def seidel(a, b, e = 0.01):
         x = []
         for i in range(len(a)):
             xi = 0
-            # print('len(x) =', len(x))
             for j in range(len(x)):
-                # print(f'xi += a[{i}][{j}] * x[{j}][{0}]')
                 xi += a[i][j] * x[j][0]
             for j in range(len(x), len(a)):
                 xi += a[i][j] * x_prev[j][0]
             x.append([xi + b[i][0]])
-        # x = mat_sum(mat_mul(a, x), b)
         if (sum([abs(x[i][0]-x_prev[i][0]) for i in range(len(x))]) < e):
             break
     return list(*zip(*x))
